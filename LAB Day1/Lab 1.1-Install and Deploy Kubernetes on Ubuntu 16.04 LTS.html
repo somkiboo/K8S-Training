@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Lab 1.1-Install and Deploy Kubernetes on Ubuntu 16.04 LTS</title>
+
+
+<style type="text/css">
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  color: black; }
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black; }
+
+h3 {
+  font-size: 18px; }
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
+}
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+li {
+  margin: 0; }
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0;border-collapse: collapse; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+
+kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 11px;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb
+}
+
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h2 id="toc_0">Install and Deploy Kubernetes on Ubuntu 16.04 LTS</h2>
+
+<h3 id="toc_1">Do it on ALL NODE !!!</h3>
+
+<h5 id="toc_2">Step 1: Install Docker on both the nodes</h5>
+
+<h6 id="toc_3">Change node to root</h6>
+
+<div><pre><code class="language-none">itd@$ sudo -i 
+
+[sudo] password for itd:
+root@#</code></pre></div>
+
+<h6 id="toc_4">Ubuntu 16.04 Prep</h6>
+
+<div><pre><code class="language-none">sudo sysctl -w vm.max_map_count=262144 
+
+echo &quot;vm.max_map_count=262144&quot; &gt;&gt; /etc/sysctl.conf
+
+sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+
+sudo apt-get update -y
+
+sudo apt-get install -y python unzip nfs-common jq python-pip socat
+
+</code></pre></div>
+
+<div><pre><code class="language-none"># sudo apt install docker.io -y
+
+## Result
+Done.
+Created symlink /etc/systemd/system/sockets.target.wants/docker.socket → /lib/systemd/system/docker.socket.
+Processing triggers for ureadahead (0.100.0-20) ...
+Processing triggers for libc-bin (2.27-3ubuntu1) ...
+Processing triggers for systemd (237-3ubuntu10.19) ...</code></pre></div>
+
+<h6 id="toc_5">Check docker version</h6>
+
+<div><pre><code class="language-none"># docker --version
+
+## Result
+Docker version 18.09.2, build 6247962
+</code></pre></div>
+
+<h5 id="toc_6">Step 2: Enable Docker on both the nodes</h5>
+
+<div><pre><code class="language-none"># export LC_CTYPE=en_US.UTF-8
+# export LC_ALL=en_US.UTF-8
+# sudo systemctl enable docker
+
+## Result
+Synchronizing state of docker.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install enable docker
+</code></pre></div>
+
+<h5 id="toc_7">Step 3: Add the Kubernetes signing key on both the nodes</h5>
+
+<div><pre><code class="language-none"># curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
+
+## Result
+OK</code></pre></div>
+
+<h5 id="toc_8">Step 3.1 : Install curl utility</h5>
+
+<div><pre><code class="language-none">
+# sudo apt install curl -y
+
+## Result
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+curl is already the newest version (7.58.0-2ubuntu3.6).
+0 upgraded, 0 newly installed, 0 to remove and 134 not upgraded.
+</code></pre></div>
+
+<h5 id="toc_9">Step 4: Add Xenial Kubernetes Repository on both the nodes</h5>
+
+<div><pre><code class="language-none">
+# sudo apt-add-repository &quot;deb http://apt.kubernetes.io/ kubernetes-xenial main&quot;
+
+## Result
+Hit:2 http://archive.ubuntu.com/ubuntu bionic InRelease
+Get:3 http://archive.ubuntu.com/ubuntu bionic-updates InRelease [88.7 kB]
+Get:1 https://packages.cloud.google.com/apt kubernetes-xenial InRelease [8,993 B]
+Get:4 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 Packages [26.0 kB]
+Get:5 http://archive.ubuntu.com/ubuntu bionic-backports InRelease [74.6 kB]
+Get:6 http://archive.ubuntu.com/ubuntu bionic-security InRelease [88.7 kB]
+Fetched 287 kB in 2s (141 kB/s)
+Reading package lists... Done
+
+
+</code></pre></div>
+
+<h5 id="toc_10">Step 5: Install Kubeadm</h5>
+
+<div><pre><code class="language-none"># sudo apt-get update
+# sudo apt install kubeadm -y
+
+## Result
+Setting up cri-tools (1.12.0-00) ...
+Setting up socat (1.7.3.2-2ubuntu2) ...
+Setting up kubelet (1.14.2-00) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/kubelet.service → /lib/systemd/system/kubelet.service.
+Setting up kubectl (1.14.2-00) ...
+Processing triggers for man-db (2.8.3-2) ...
+Setting up kubeadm (1.14.2-00) ...
+
+</code></pre></div>
+
+<h5 id="toc_11">Step 5.1: Checking Kubeadm version</h5>
+
+<div><pre><code class="language-none"># kubeadm version
+
+## Result 
+
+kubeadm version: &amp;version.Info{Major:&quot;1&quot;, Minor:&quot;14&quot;, GitVersion:&quot;v1.14.2&quot;, GitCommit:&quot;66049e3b21efe110454d67df4fa62b08ea79a19b&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2019-05-16T16:20:34Z&quot;, GoVersion:&quot;go1.12.5&quot;, Compiler:&quot;gc&quot;, Platform:&quot;linux/amd64&quot;}
+
+</code></pre></div>
+
+<h5 id="toc_12">Step 6: Disable swap memory (if running) on both the nodes</h5>
+
+<div><pre><code class="language-none">
+# sudo swapoff -a
+</code></pre></div>
+
+<div><pre><code class="language-none"># vi /etc/fstab
+
+Then command out this line
+
+    /dev/mapper/cryptswap1 none swap sw 0 0
+
+## Result
+    # &lt;file system&gt; &lt;mount point&gt;   &lt;type&gt;  &lt;options&gt;       &lt;dump&gt;  &lt;pass&gt;
+    /dev/mapper/ubuntu16045--vg-root /               ext4    errors=remount-ro 0       1
+    # /boot was on /dev/sda1 during installation
+    UUID=a05f9152-b558-49d2-bf16-816242354fe9 /boot           ext2    defaults        0       2
+    #/dev/mapper/ubuntu16045--vg-swap_1 none            swap    sw              0       0
+    #/dev/mapper/cryptswap1 none swap sw 0 0
+</code></pre></div>
+
+<h5 id="toc_13">Step 7: Give Unique hostnames to each node</h5>
+
+<div><pre><code class="language-none">root@master:~# hostname
+master
+
+root@worker1:~# hostname
+worker1
+</code></pre></div>
+
+<h5 id="toc_14">Step 8: Verify /etc/hosts</h5>
+
+<div><pre><code class="language-none">### Change IP address to your own.
+10.40.41.169    master
+10.40.41.170    worker1</code></pre></div>
+
+<h5 id="toc_15">Step 9: Validate linux hostname</h5>
+
+<div><pre><code class="language-none">ping master
+ping worker1
+</code></pre></div>
+
+<h3 id="toc_16">Do it only on MASTER NODE !!!</h3>
+
+<h5 id="toc_17">Step 10 : Initialize Kubernetes on the master node</h5>
+
+<div><pre><code class="language-none">root@master:~# sudo kubeadm init --pod-network-cidr=10.244.0.0/16</code></pre></div>
+
+<p>Result</p>
+
+<div><pre><code class="language-none">Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run &quot;kubectl apply -f [podnetwork].yaml&quot; with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 10.40.41.169:6443 --token jjb1oa.qvsnnluo50ixgw3m \
+    --discovery-token-ca-cert-hash sha256:c0c5e0c261937e8b61d51d5ee74f08f7e9305f5acce439046201de59206f69a3</code></pre></div>
+
+<h5 id="toc_18">Step 11 : Start using cluster</h5>
+
+<p>To start using your cluster, you need to run the following as a regular user:</p>
+
+<div><pre><code class="language-none">root@master:~# mkdir -p $HOME/.kube
+
+root@master:~# sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
+root@master:~# sudo chown $(id -u):$(id -g) $HOME/.kube/config
+</code></pre></div>
+
+<h3 id="toc_19">NOTE</h3>
+
+<p>You can now join any number of machines by running the following on each node</p>
+
+<p>as root:</p>
+
+<div><pre><code class="language-none">kubeadm join 10.40.41.169:6443 --token jjb1oa.qvsnnluo50ixgw3m \
+    --discovery-token-ca-cert-hash sha256:c0c5e0c261937e8b61d51d5ee74f08f7e9305f5acce439046201de59206f69a3
+</code></pre></div>
+
+<h5 id="toc_20">Step 12 : You can check the status of the master node</h5>
+
+<p>by running the following command:</p>
+
+<div><pre><code class="language-none">root@master:~# kubectl get nodes
+
+## Result
+NAME     STATUS     ROLES    AGE     VERSION
+master   NotReady   master   9m14s   v1.14.2
+</code></pre></div>
+
+<h5 id="toc_21">Step 13 : Deploy a Pod Network through the master node</h5>
+
+<p>A pod network is a medium of communication between the nodes of a network. In this tutorial, we are deploying a Flannel pod network on our cluster through the following command:</p>
+
+<div><pre><code class="language-none">root@master:~# sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</code></pre></div>
+
+<p>Result</p>
+
+<div><pre><code class="language-none">podsecuritypolicy.extensions/psp.flannel.unprivileged created
+clusterrole.rbac.authorization.k8s.io/flannel created
+clusterrolebinding.rbac.authorization.k8s.io/flannel created
+serviceaccount/flannel created
+configmap/kube-flannel-cfg created
+daemonset.extensions/kube-flannel-ds-amd64 created
+daemonset.extensions/kube-flannel-ds-arm64 created
+daemonset.extensions/kube-flannel-ds-arm created
+daemonset.extensions/kube-flannel-ds-ppc64le created
+daemonset.extensions/kube-flannel-ds-s390x created</code></pre></div>
+
+<h5 id="toc_22">Step 14 : Use the following command in order to view the status of the network:</h5>
+
+<div><pre><code class="language-none">root@master:~# kubectl get pods --all-namespaces</code></pre></div>
+
+<p>Result</p>
+
+<div><pre><code class="language-none">NAMESPACE     NAME                             READY   STATUS    RESTARTS   AGE
+kube-system   coredns-fb8b8dccf-57w24          1/1     Running   0          12m
+kube-system   coredns-fb8b8dccf-c9mhn          1/1     Running   0          12m
+kube-system   etcd-master                      1/1     Running   0          11m
+kube-system   kube-apiserver-master            1/1     Running   0          11m
+kube-system   kube-controller-manager-master   1/1     Running   0          11m
+kube-system   kube-flannel-ds-amd64-7wjnd      1/1     Running   0          60s
+kube-system   kube-proxy-gdxdr                 1/1     Running   0          12m
+kube-system   kube-scheduler-master            1/1     Running   0          11m
+</code></pre></div>
+
+<h5 id="toc_23">Step 15 : Now when you see the status of the nodes, you will see that the master-node is ready:</h5>
+
+<div><pre><code class="language-none">root@master:~# kubectl get nodes
+</code></pre></div>
+
+<p>Result</p>
+
+<div><pre><code class="language-none">NAME     STATUS   ROLES    AGE   VERSION
+master   Ready    master   15m   v1.14.2</code></pre></div>
+
+<h3 id="toc_24">Do it only on Slave NODE !!!</h3>
+
+<h5 id="toc_25">Step 16 : Add the slave node to the network in order to form a cluster</h5>
+
+<div><pre><code class="language-none">root@worker1:~# kubeadm join 10.40.41.169:6443 --token jjb1oa.qvsnnluo50ixgw3m \
+&gt;     --discovery-token-ca-cert-hash sha256:c0c5e0c261937e8b61d51d5ee74f08f7e9305f5acce439046201de59206f69a3
+</code></pre></div>
+
+<p>Result</p>
+
+<div><pre><code class="language-none">[preflight] Running pre-flight checks
+    [WARNING IsDockerSystemdCheck]: detected &quot;cgroupfs&quot; as the Docker cgroup driver. The recommended driver is &quot;systemd&quot;. Please follow the guide at https://kubernetes.io/docs/setup/cri/
+[preflight] Reading configuration from the cluster...
+[preflight] FYI: You can look at this config file with &#39;kubectl -n kube-system get cm kubeadm-config -oyaml&#39;
+[kubelet-start] Downloading configuration for the kubelet from the &quot;kubelet-config-1.14&quot; ConfigMap in the kube-system namespace
+[kubelet-start] Writing kubelet configuration to file &quot;/var/lib/kubelet/config.yaml&quot;
+[kubelet-start] Writing kubelet environment file with flags to file &quot;/var/lib/kubelet/kubeadm-flags.env&quot;
+[kubelet-start] Activating the kubelet service
+[kubelet-start] Waiting for the kubelet to perform the TLS Bootstrap...
+
+This node has joined the cluster:
+* Certificate signing request was sent to apiserver and a response was received.
+* The Kubelet was informed of the new secure connection details.
+
+Run &#39;kubectl get nodes&#39; on the control-plane to see this node join the cluster.
+</code></pre></div>
+
+<h5 id="toc_26">Step 17 : List K8s nodes on Master.</h5>
+
+<p>Now when you run the following command on the master node, it will confirm that two nodes, the master node, and the server nodes are running on your system.</p>
+
+<div><pre><code class="language-none">root@master:~# sudo kubectl get nodes
+NAME      STATUS   ROLES    AGE   VERSION
+master    Ready    master   18m   v1.14.2
+worker1   Ready    &lt;none&gt;   72s   v1.14.2
+</code></pre></div>
+
+<h5 id="toc_27">Step 18 : Get cluster information.</h5>
+
+<div><pre><code class="language-none">root@master:~# kubectl cluster-info
+
+Kubernetes master is running at https://10.40.41.169:6443
+KubeDNS is running at https://10.40.41.169:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use &#39;kubectl cluster-info dump&#39;.</code></pre></div>
+
+<hr>
+
+<p>Error 1 : perl: warning: Please check that your locale settings:</p>
+
+<div><pre><code class="language-none">
+# export LC_CTYPE=en_US.UTF-8
+# export LC_ALL=en_US.UTF-8 
+
+to fixed
+
+perl: warning: Please check that your locale settings:
+    LANGUAGE = (unset),
+    LC_ALL = (unset),
+    LC_CTYPE = &quot;UTF-8&quot;,
+    LANG = &quot;en_US.UTF-8&quot;
+</code></pre></div>
+
+<hr>
+
+<p>Thank you 3,000 to</p>
+
+<p>Reference : https://vitux.com/install-and-deploy-kubernetes-on-ubuntu/</p>
+
+
+
+
+</body>
+
+</html>
